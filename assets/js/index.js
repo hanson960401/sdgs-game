@@ -241,9 +241,15 @@ function renderTeamCountOptions() {
 // 套用隊伍數：重設 teamNames、money（保留棋子位置）
 function applyTeamCount(n) {
   const count = Math.max(2, Math.min(12, Number(n) || 2));
+  // 這裡會呼叫你先前改好的自訂角色 defaultTeamNames
   const names = defaultTeamNames(count);
+  
+  // 保留原本隊伍的錢，新隊伍給 200
   const money = {};
-  for (let i = 0; i < count; i++) money["t" + i] = 200;
+  for (let i = 0; i < count; i++) {
+    money["t" + i] = state.money["t" + i] || 200;
+  }
+  
   state.teamCount = count;
   state.teamNames = names;
   state.money = money;
