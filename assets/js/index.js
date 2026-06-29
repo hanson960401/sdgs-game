@@ -184,7 +184,7 @@ function renderTeams() {
       let optionsHtml = "";
       characters.forEach((char) => {
         const isSelected = (state.teamNames[idx] === char);
-        optionsHtml += `<option value="${char}" ${isSelected ? "selected" : ""}>${char}</option>`;
+        optionsHtml += `<option value="${char}" ${isSelected ? "selected" : ""}>${char} 小隊</option>`;
       });
 
       card.innerHTML = `
