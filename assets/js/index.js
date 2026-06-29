@@ -76,7 +76,7 @@ const PIECE_STEP_MS = 200; // 每格停留時間（決定整體節奏）
 
 // ===== 預設隊名（改為自訂角色） =====
 function defaultTeamNames(n) {
-  const characters = ["蓋瑞", "蠻牛", "羊咩咩", "茱蒂", "尼克", "快俠"];
+  const characters = ["蓋瑞小隊", "蠻牛小隊", "羊咩咩小隊", "茱蒂小隊", "尼克小隊", "快俠小隊"];
   const names = [];
   for (let i = 0; i < n; i++) {
     // 若超過 6 個隊伍，補上通用名稱
