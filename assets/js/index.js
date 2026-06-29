@@ -74,20 +74,13 @@ let rolling = false;
 const PIECE_HOP_MS = 180;
 const PIECE_STEP_MS = 200; // 每格停留時間（決定整體節奏）
 
-// ===== 預設隊名（第一小隊、第二小隊…） =====
+// ===== 預設隊名（改為自訂角色） =====
 function defaultTeamNames(n) {
-  const zhNums = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
+  const characters = ["蓋瑞", "蠻牛", "羊咩咩", "茱蒂", "尼克", "快俠"];
   const names = [];
   for (let i = 0; i < n; i++) {
-    const k = i + 1;
-    let zh = "";
-    if (k <= 10) zh = zhNums[k - 1];
-    else {
-      const t = Math.floor(k / 10),
-        o = k % 10;
-      zh = (t === 1 ? "十" : zhNums[t - 1] + "十") + (o ? zhNums[o - 1] : "");
-    }
-    names.push(`第${zh}小隊`);
+    // 若超過 6 個隊伍，補上通用名稱
+    names.push(characters[i] || `隊伍 ${i + 1}`);
   }
   return names;
 }
@@ -177,16 +170,27 @@ function animateMove(steps, callback) {
 //<span class="dot"></span>
 function renderTeams() {
   teamsContainer.innerHTML = "";
+  const characters = ["蓋瑞", "蠻牛", "羊咩咩", "茱蒂", "尼克", "快俠"];
+
   Object.keys(state.money)
     .sort()
     .forEach((key) => {
       const idx = Number(key.replace("t", "") || 0);
-      const name = state.teamNames[idx] || `小隊 ${idx + 1}`;
       const card = document.createElement("div");
       card.className = "money-card";
       card.dataset.key = key;
+      
+      // 生成下拉式選單選項，並動態比對當前儲存的隊名
+      let optionsHtml = "";
+      characters.forEach((char) => {
+        const isSelected = (state.teamNames[idx] === char);
+        optionsHtml += `<option value="${char}" ${isSelected ? "selected" : ""}>${char}</option>`;
+      });
+
       card.innerHTML = `
-      <div class="who">${name}</div>
+      <select class="team-select" data-idx="${idx}" style="font-size: 16px; padding: 4px; border-radius: 4px; border: 1px solid #ccc;">
+        ${optionsHtml}
+      </select>
       <div class="stepper">
         <button class="btn minus" data-key="${key}">−</button>
         <div class="amt" id="money-${key}">$${state.money[key]}</div>
@@ -194,6 +198,15 @@ function renderTeams() {
       </div>`;
       teamsContainer.appendChild(card);
     });
+
+  // 監聽下拉選單切換，並即時儲存狀態
+  teamsContainer.querySelectorAll(".team-select").forEach((sel) => {
+    sel.addEventListener("change", (e) => {
+      const idx = Number(e.target.dataset.idx);
+      state.teamNames[idx] = e.target.value;
+      saveState();
+    });
+  });
 
   teamsContainer.querySelectorAll(".plus").forEach((b) => {
     b.addEventListener("click", () => {
