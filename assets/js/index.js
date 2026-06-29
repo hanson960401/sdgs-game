@@ -170,7 +170,7 @@ function animateMove(steps, callback) {
 //<span class="dot"></span>
 function renderTeams() {
   teamsContainer.innerHTML = "";
-  const characters = ["蓋瑞", "蠻牛", "羊咩咩", "茱蒂", "尼克", "快俠"];
+  const characters = ["蓋瑞小隊", "蠻牛小隊", "羊咩咩小隊", "茱蒂小隊", "尼克小隊", "快俠小隊"];
 
   Object.keys(state.money)
     .sort()
