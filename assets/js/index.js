@@ -188,10 +188,22 @@ function renderTeams() {
       });
 
       card.innerHTML = `
-      <select class="team-select" data-idx="${idx}" style="font-size: 16px; padding: 4px; border-radius: 4px; border: 1px solid #ccc;">
+      <select class="team-select" data-idx="${idx}" style="
+        font-size: 18px; 
+        padding: 6px 12px; 
+        border-radius: 8px; 
+        border: 2px solid #ccc; 
+        background-color: #ffffff;
+        color: #333333;
+        width: 140px; 
+        font-weight: bold;
+        cursor: pointer;
+        display: inline-block;
+        vertical-align: middle;
+      ">
         ${optionsHtml}
       </select>
-      <div class="stepper">
+      <div class="stepper" style="display: inline-flex; align-items: center; margin-left: 10px;">
         <button class="btn minus" data-key="${key}">−</button>
         <div class="amt" id="money-${key}">$${state.money[key]}</div>
         <button class="btn plus" data-key="${key}">＋</button>
