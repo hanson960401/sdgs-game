@@ -167,7 +167,6 @@ function animateMove(steps, callback) {
 }
 
 // 左側分數卡
-//<span class="dot"></span>
 function renderTeams() {
   teamsContainer.innerHTML = "";
   const characters = ["蓋瑞", "蠻牛", "羊咩咩", "茱蒂", "尼克", "快俠"];
@@ -250,8 +249,6 @@ function renderTeamCountOptions() {
   }
 }
 
-// 套用隊伍數：重設 teamNames、money（保留棋子位置）
-// 套用隊伍數：重設 teamNames、money（保留棋子位置）
 // 套用隊伍數：重設 teamNames、money（保留棋子位置）
 // 新增 resetMoney 參數，預設為 false
 function applyTeamCount(n, resetMoney = false) {
@@ -437,11 +434,10 @@ cancelNewGameBtn.addEventListener("click", () => {
 });
 
 // 3. 點擊「確定重置」 -> 執行原本的重置邏輯
-// 找到這個區塊並修改第一行：
 doNewGameBtn.addEventListener("click", () => {
   newGameModal.classList.remove("show");
 
-  // ★ 修改這裡：傳入 true，告訴程式這是一場全新遊戲，強制把錢洗回 200！
+  // ★ 修正：傳入 true 徹底重置全體金額為 200
   applyTeamCount(state.teamCount, true); 
   
   state.pos = 4;
@@ -457,6 +453,7 @@ doNewGameBtn.addEventListener("click", () => {
 
   saveState();
   drawPiece();
+  renderTeams(); // ★ 關鍵修正：讓網頁立刻更新成最新的 $200 畫面！
 });
 
 // chance 等頁傳回的動作（仍可用於前進/回起點等，但不涉分數）
