@@ -252,15 +252,16 @@ function renderTeamCountOptions() {
 
 // 套用隊伍數：重設 teamNames、money（保留棋子位置）
 // 套用隊伍數：重設 teamNames、money（保留棋子位置）
-function applyTeamCount(n) {
+// 套用隊伍數：重設 teamNames、money（保留棋子位置）
+// 新增 resetMoney 參數，預設為 false
+function applyTeamCount(n, resetMoney = false) {
   const count = Math.max(2, Math.min(12, Number(n) || 2));
-  // 這裡會呼叫你先前改好的自訂角色 defaultTeamNames
   const names = defaultTeamNames(count);
   
-  // 保留原本隊伍的錢，新隊伍給 200
   const money = {};
   for (let i = 0; i < count; i++) {
-    money["t" + i] = state.money["t" + i] || 200;
+    // 如果 resetMoney 是 true，就一律重設為 200；否則才保留舊金額
+    money["t" + i] = resetMoney ? 200 : (state.money["t" + i] || 200);
   }
   
   state.teamCount = count;
@@ -436,12 +437,13 @@ cancelNewGameBtn.addEventListener("click", () => {
 });
 
 // 3. 點擊「確定重置」 -> 執行原本的重置邏輯
+// 找到這個區塊並修改第一行：
 doNewGameBtn.addEventListener("click", () => {
-  // 關閉視窗
   newGameModal.classList.remove("show");
 
-  // --- 以下是原本 newGame() 的重置程式碼 ---
-  applyTeamCount(state.teamCount);
+  // ★ 修改這裡：傳入 true，告訴程式這是一場全新遊戲，強制把錢洗回 200！
+  applyTeamCount(state.teamCount, true); 
+  
   state.pos = 4;
   setDiceFace(null);
   confirmBox.classList.remove("show");
@@ -455,9 +457,6 @@ doNewGameBtn.addEventListener("click", () => {
 
   saveState();
   drawPiece();
-
-  // 提示
-  // alert('遊戲已重置！'); // 視需求決定是否要跳這個提示，通常畫面變了就知道了
 });
 
 // chance 等頁傳回的動作（仍可用於前進/回起點等，但不涉分數）
